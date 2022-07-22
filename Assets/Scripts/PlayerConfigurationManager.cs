@@ -14,9 +14,6 @@ public class PlayerConfigurationManager : MonoBehaviour
 
     public static PlayerConfigurationManager instance { get; private set; }
 
-    private float timeToStart = 5.0f;
-    private bool starting = false;
-
     private void Awake()
     {
         if (instance != null)
@@ -31,21 +28,14 @@ public class PlayerConfigurationManager : MonoBehaviour
         }
     }
 
-    private void Update()
+    public List<PlayerConfiguration> GetPlayerConfigs()
     {
-        if (playerConfigs.Count == maxPlayers && playerConfigs.All(p => p.isReady == true))
-        {
-            starting = true;
-        }
+        return playerConfigs;
+    }
 
-        if (starting)
-        {
-            timeToStart -= Time.deltaTime;
-            if (timeToStart < 0)
-            {
-                StartMatch();
-            }
-        }
+    public void SetPlayerCharacter(int index, Material color)
+    {
+        playerConfigs[index].playerMaterial = color;
     }
 
     public void SetPlayerCharacter(int index, GameObject characterChoice)
@@ -56,12 +46,16 @@ public class PlayerConfigurationManager : MonoBehaviour
     public void ReadyPlayer(int index)
     {
         playerConfigs[index].isReady = true;
+
+        if (playerConfigs.Count == maxPlayers && playerConfigs.All(p => p.isReady == true))
+        {
+            StartMatch();
+        }
     }
 
     public void UnReadyPlayer(int index)
     {
         playerConfigs[index].isReady = false;
-        starting = false;
     }
 
     private void StartMatch()
@@ -71,7 +65,7 @@ public class PlayerConfigurationManager : MonoBehaviour
 
     public void HandlePlayerJoin(PlayerInput pI)
     {
-        Debug.Log("");
+        Debug.Log("Player Joined!");
         if (!playerConfigs.Any(p => p.playerIndex == pI.playerIndex))
         {
             pI.transform.SetParent(transform);
@@ -91,5 +85,6 @@ public class PlayerConfiguration
     public int playerIndex { get; set; }
     public string playerName { get; set; }
     public GameObject playerCharacterPrefabChoice;
+    public Material playerMaterial { get; set; }
     public bool isReady { get; set; }
 }
