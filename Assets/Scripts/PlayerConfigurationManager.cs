@@ -14,6 +14,7 @@ public class PlayerConfigurationManager : MonoBehaviour
 
     public static PlayerConfigurationManager instance { get; private set; }
 
+    #region Singleton
     private void Awake()
     {
         if (instance != null)
@@ -27,6 +28,7 @@ public class PlayerConfigurationManager : MonoBehaviour
             playerConfigs = new List<PlayerConfiguration>();
         }
     }
+    #endregion
 
     public List<PlayerConfiguration> GetPlayerConfigs()
     {

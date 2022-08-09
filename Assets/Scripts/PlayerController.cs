@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField]
-    private float playerSpeed = 2.0f;
+    private float playerSpeed = 5.0f;
     [SerializeField]
     private float jumpHeight = 1.0f;
     [SerializeField]
@@ -33,6 +33,16 @@ public class PlayerController : MonoBehaviour
         jumped = context.action.triggered;
     }
 
+    public void OnSprint(InputAction.CallbackContext context)
+    {
+        playerSpeed = 15;
+    }
+
+    public void Respawn()
+    {
+        this.transform.Translate(new Vector3(0, 10, -20));
+    }
+
     void Update()
     {
         groundedPlayer = controller.isGrounded;
@@ -52,5 +62,11 @@ public class PlayerController : MonoBehaviour
 
         playerVelocity.y += gravityValue * Time.deltaTime;
         controller.Move(playerVelocity * Time.deltaTime);
+
+        if (this.transform.position.y <= -10)
+        {
+            Respawn();
+        }
+        playerSpeed = 5;
     }
 }

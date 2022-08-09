@@ -34,5 +34,10 @@ public class PlayerInputHandler : MonoBehaviour
         {
             control.OnJump(obj);
         }
+
+        if (obj.action.name == controls.Player.Sprint.name)
+        {
+            control.OnSprint(obj);
+        }
     }
 }
