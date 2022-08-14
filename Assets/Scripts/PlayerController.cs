@@ -80,7 +80,7 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Zing!");
         inControl = true;
         gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-        transform.SetPositionAndRotation (new Vector3(spawnPoints[0].position.x, spawnPoints[0].position.y + 1, spawnPoints[0].position.z), Quaternion.identity);
+        transform.position = new Vector3(spawnPoints[1].position.x, spawnPoints[1].position.y + 1, spawnPoints[1].position.z);
     }
 
     void Update()
