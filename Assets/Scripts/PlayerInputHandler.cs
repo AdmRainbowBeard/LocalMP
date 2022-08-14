@@ -6,7 +6,7 @@ public class PlayerInputHandler : MonoBehaviour
     private PlayerController control;
 
     [SerializeField]
-    private MeshRenderer playerMesh;
+    private SkinnedMeshRenderer playerMesh;
 
     private PlayerControls controls;
 

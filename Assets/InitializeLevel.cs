@@ -3,7 +3,7 @@ using UnityEngine;
 public class InitializeLevel : MonoBehaviour
 {
     [SerializeField]
-    private Transform[] playerSpawnpoints;
+    public Transform[] playerSpawnpoints;
     [SerializeField]
     private GameObject playerPrefab;
 

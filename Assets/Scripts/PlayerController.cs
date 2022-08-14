@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -15,21 +16,47 @@ public class PlayerController : MonoBehaviour
     private Vector3 playerVelocity;
     private bool groundedPlayer;
 
+    private Animator anim;
+
+    public bool inControl = true;
     private Vector2 movementInput = Vector2.zero;
     private bool jumped = false;
 
+    public int respawnTime { get; private set; }
+    public GameObject lI;
+    private Transform[] spawnPoints;
+
     private void Start()
     {
+        lI = GameObject.Find("LevelInitializer");
+        spawnPoints = lI.GetComponent<InitializeLevel>().playerSpawnpoints;
+
         controller = gameObject.GetComponent<CharacterController>();
+        anim = gameObject.GetComponent<Animator>();
+
+        respawnTime = 2;
     }
 
     public void OnMove(InputAction.CallbackContext context)
     {
+        if (!inControl) return;
+
         movementInput = context.ReadValue<Vector2>();
+
+        if (movementInput != Vector2.zero)
+        {
+            if (anim != null) anim.SetBool("isMoving", true);
+        }
+        else
+        {
+            if (anim != null) anim.SetBool("isMoving", false);
+        }
     }
 
     public void OnJump(InputAction.CallbackContext context)
     {
+        if (!inControl) return;
+
         jumped = context.action.triggered;
     }
 
@@ -38,9 +65,22 @@ public class PlayerController : MonoBehaviour
         playerSpeed = 15;
     }
 
-    public void Respawn()
+    private void Die()
     {
-        this.transform.Translate(new Vector3(0, 10, -20));
+        inControl = false;
+        // Display respanw countdown
+        // Display negative score pop-up
+        StartCoroutine(Respawn());
+    }
+
+    public IEnumerator Respawn()
+    {
+        yield return new WaitForSeconds(respawnTime);
+
+        Debug.Log("Zing!");
+        inControl = true;
+        gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        transform.SetPositionAndRotation (new Vector3(spawnPoints[0].position.x, spawnPoints[0].position.y + 1, spawnPoints[0].position.z), Quaternion.identity);
     }
 
     void Update()
@@ -68,10 +108,15 @@ public class PlayerController : MonoBehaviour
         playerVelocity.y += gravityValue * Time.deltaTime;
         controller.Move(playerVelocity * Time.deltaTime);
 
-        if (this.transform.position.y <= -10)
-        {
-            Respawn();
-        }
         playerSpeed = 5;
+    }
+
+    public void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Water")
+        {
+            Debug.Log("Ow");
+            Die();
+        }
     }
 }
