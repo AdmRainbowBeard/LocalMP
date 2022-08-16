@@ -77,10 +77,9 @@ public class PlayerController : MonoBehaviour
     {
         yield return new WaitForSeconds(respawnTime);
 
-        Debug.Log("Zing!");
         inControl = true;
         gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-        transform.position = new Vector3(spawnPoints[1].position.x, spawnPoints[1].position.y + 1, spawnPoints[1].position.z);
+        gameObject.transform.position = new Vector3(spawnPoints[1].position.x, spawnPoints[1].position.y + 1, spawnPoints[1].position.z);
     }
 
     void Update()
