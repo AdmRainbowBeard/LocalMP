@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 playerVelocity;
     private bool groundedPlayer;
 
+    [SerializeField]
     private Animator anim;
 
     public bool inControl = true;
@@ -114,7 +115,7 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.tag == "Water")
         {
-            Debug.Log("Ow");
+            gravityValue = -4f;
             Die();
         }
     }
