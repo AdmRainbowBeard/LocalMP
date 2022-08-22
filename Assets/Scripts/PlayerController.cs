@@ -81,6 +81,9 @@ public class PlayerController : MonoBehaviour
         inControl = true;
         gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
         gameObject.transform.position = new Vector3(spawnPoints[1].position.x, spawnPoints[1].position.y + 1, spawnPoints[1].position.z);
+
+        // Reset Gravity 
+        gravityValue = -9.81f * 2;
     }
 
     void Update()
@@ -109,6 +112,8 @@ public class PlayerController : MonoBehaviour
         controller.Move(playerVelocity * Time.deltaTime);
 
         playerSpeed = 5;
+
+        if (transform.position.y < -20) Die();
     }
 
     public void OnTriggerEnter(Collider other)
