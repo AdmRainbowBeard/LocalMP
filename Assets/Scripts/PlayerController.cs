@@ -51,6 +51,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void OnInteract(InputAction.CallbackContext context)
+    {
+        Die();
+    }
+
     public void OnMove(InputAction.CallbackContext context)
     {
         if (!inControl) return;

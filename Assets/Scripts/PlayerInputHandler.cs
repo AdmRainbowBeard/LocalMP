@@ -25,7 +25,7 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void Input_onActionTriggered(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        if (obj.action.name == controls.Player.Functions.name)
+        if (obj.action.name == controls.Player.Menu.name)
         {
             GameManager.instance.OnStartPressed(obj);
         }
@@ -43,6 +43,11 @@ public class PlayerInputHandler : MonoBehaviour
         if (obj.action.name == controls.Player.Sprint.name)
         {
             control.OnSprint(obj);
+        }
+
+        if (obj.action.name == controls.Player.Interact.name)
+        {
+            control.OnInteract(obj);
         }
     }
 }
