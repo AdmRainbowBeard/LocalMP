@@ -25,6 +25,11 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void Input_onActionTriggered(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
+        if (obj.action.name == controls.Player.Functions.name)
+        {
+            GameManager.instance.OnStartPressed(obj);
+        }
+
         if (obj.action.name == controls.Player.Movement.name)
         {
             control.OnMove(obj);

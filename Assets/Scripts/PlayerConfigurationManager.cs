@@ -1,4 +1,4 @@
-using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -9,8 +9,14 @@ public class PlayerConfigurationManager : MonoBehaviour
 {
     private List<PlayerConfiguration> playerConfigs;
 
+    public bool canStart = false;
+    private bool hasStarted = false;
+
     [SerializeField]
-    private int maxPlayers = 2;
+    private int minPlayers = 2;
+
+    [SerializeField]
+    private int maxPlayers = 3;
 
     public static PlayerConfigurationManager instance { get; private set; }
 
@@ -52,6 +58,7 @@ public class PlayerConfigurationManager : MonoBehaviour
         if (playerConfigs.Count == maxPlayers && playerConfigs.All(p => p.isReady == true))
         {
             StartMatch();
+            canStart = true;
         }
     }
 
@@ -60,7 +67,31 @@ public class PlayerConfigurationManager : MonoBehaviour
         playerConfigs[index].isReady = false;
     }
 
-    private void StartMatch()
+    private void Update()
+    {
+        if (playerConfigs.Any(p => p.isReady))
+        {
+            if (!hasStarted)
+            {
+                StartCoroutine(CountdownToStart());
+                hasStarted = true;
+            }
+        }
+
+
+        if (playerConfigs.Any(p => p.pressedStart)) 
+        {
+            StartMatch();
+        } 
+    }
+
+    public IEnumerator CountdownToStart()
+    {
+        yield return new WaitForSeconds(3);
+        StartMatch();
+    }
+
+    public void StartMatch(string levelName = "SampleScene")
     {
         SceneManager.LoadScene("SampleScene");
     }
@@ -89,4 +120,5 @@ public class PlayerConfiguration
     public GameObject playerCharacterPrefabChoice;
     public Material playerMaterial { get; set; }
     public bool isReady { get; set; }
+    public bool pressedStart { get; set; }
 }
